@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Tooltip } from '@patternfly/react-core';
+import { ClockIcon, TimesIcon, ExclamationTriangleIcon, ServerIcon, BlueprintIcon } from '@patternfly/react-icons';
+import { LongArrowAltUpIcon, LongArrowAltDownIcon, ArrowsAltVIcon } from '@patternfly/react-icons';
 import { Skeleton, SkeletonSize } from '@redhat-cloud-services/frontend-components';
-import { ArrowsAltVIcon, BlueprintIcon, ClockIcon, DisconnectedIcon, ExclamationTriangleIcon,
-    LongArrowAltUpIcon, LongArrowAltDownIcon, ServerIcon, TimesIcon } from '@patternfly/react-icons';
 import moment from 'moment';
 
 import { ASC, DESC } from '../../../../constants';
@@ -52,33 +52,6 @@ class ComparisonHeader extends Component {
         return [ <td key='loading-systems-header'><Skeleton size={ SkeletonSize.md } /></td> ];
     }
 
-    renderInsightsIcons = (item) => {
-        return (
-            <React.Fragment>
-                { item.system_stale
-                    ? <Tooltip
-                        position='top'
-                        content={ <div>Stale system</div> }
-                    >
-                        <ExclamationTriangleIcon />
-                    </Tooltip>
-                    : null
-                }
-                { item.insights_enabled === false || item.insights_installed === false
-                    ? <Tooltip
-                        position='top'
-                        content={ !item.insights_installed
-                            ? <div>Insights not installed</div>
-                            : <div>Insights not enabled</div> }
-                    >
-                        <DisconnectedIcon />
-                    </Tooltip>
-                    : null
-                }
-            </React.Fragment>
-        );
-    }
-
     renderSystemHeaders() {
         const { fetchCompare, masterList, permissions, referenceId, removeSystem, selectedBaselineIds,
             selectedHSPIds, selectHistoricProfiles, systemIds, updateReferenceId } = this.props;
@@ -120,7 +93,6 @@ class ComparisonHeader extends Component {
                 >
                     <div>
                         <a
-                            aria-label='remove-system-icon'
                             onClick={ () => removeSystem(item) }
                             className="remove-system-icon"
                             data-ouia-component-type='PF4/Button'
@@ -149,12 +121,10 @@ class ComparisonHeader extends Component {
                                     <ExclamationTriangleIcon color="#f0ab00"/>
                                 </Tooltip> : ''
                             }
-                            <span className='system-header-date-margin'>
-                                { item.last_updated
-                                    ? this.formatDate(item.last_updated)
-                                    : this.formatDate(item.updated)
-                                }
-                            </span>
+                            { item.last_updated
+                                ? this.formatDate(item.last_updated)
+                                : this.formatDate(item.updated)
+                            }
                             { permissions.hspRead &&
                                 (item.type === 'system' || item.type === 'historical-system-profile')
                                 ? <HistoricalProfilesPopover
@@ -171,7 +141,6 @@ class ComparisonHeader extends Component {
                                 />
                                 : null
                             }
-                            { this.renderInsightsIcons(item) }
                         </div>
                     </div>
                 </th>
