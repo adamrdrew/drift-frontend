@@ -36,7 +36,9 @@ objects:
           - id: drift
             module: ./RootApp
             routes:
+              - pathname: /insights/drift
               - pathname: /ansible/drift
+        moduleID: drift
 parameters:
   - name: ENV_NAME
     required: true
@@ -44,3 +46,4 @@ parameters:
     required: true
   - name: IMAGE
     value: quay.io/cloudservices/drift-frontend
+
